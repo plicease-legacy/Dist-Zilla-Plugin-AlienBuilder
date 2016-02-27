@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# bash strict (see http://redsymbol.net/articles/unofficial-bash-strict-mode/)
+set -euo pipefail
+IFS=$'\n\t'
+
+rm -rf /tmp/Alien-Builder
+git clone --depth 2 https://github.com/plicease/Alien-Builder.git /tmp/Alien-Builder
+
+cd /tmp/Alien-Builder
+# this allows AnyEvent-FTP to fail on 5.8
+(dzil authordeps --missing | cpanm -n ) || true
+
+dzil install --install-command 'cpanm -n .'

@@ -3,6 +3,7 @@ sudo: false
 
 install:
   - perlbrew list
+  - bash corpus/install_alien_builder
   - dzil authordeps --missing | cpanm -n
   - dzil listdeps   --missing | cpanm -n
 
