@@ -58,9 +58,9 @@ These attributes are passed directly into the L<Alien::Builder::MM> constructor:
 
 =item provides_libs
 
-=item retreiver
+=item retriever
 
-=item retreiver_start
+=item retriever_start
 
 =item test_commands
 
@@ -78,6 +78,16 @@ you can create a subclass and specify it here.  Put the class
 in your C<inc> directory, which will automatically get
 included.
 
+=head2 retriever_spec
+
+The retriever specification is an array of hashes.  See
+the L<Alien::Builder> documentation for details.  You can
+specify elements in this array using the dot C<.> character:
+
+ [AlienBuilder]
+ retriever_spec.0.pattern = ^foo-(([0-9]+\.)*[0-9]+)$
+ retriever_spec.1.pattern = ^foo-(([0-9]+\.)*[0-9]+)\.tar\.gz$
+
 =cut
 
 use Moose;
@@ -94,10 +104,31 @@ has $_ => ( is => 'ro', isa => 'Bool' )
 
 has $_ => ( is => 'ro', isa => 'Str' )
   for qw( name build_dir extractor ffi_name interpolator provides_cflags provides_libs 
-          retreiver retreiver_start version_check );
+          retriever retriever_start version_check );
 
 has $_ => ( is => 'ro', isa => 'ArrayRef[Str]' )
   for qw( build_commands install_commands test_commands );
+
+has retriever_spec => ( is => 'ro', isa => 'ArrayRef' );
+
+around BUILDARGS => sub {
+  my $orig  = shift;
+  my $class = shift;
+  
+  my %args = ref $_[0] ? %{$_[0]} : @_;
+  $args{retriever_spec} ||= [];
+  
+  foreach my $key (keys %args)
+  {
+    if($key =~ /^retriever_spec\.([0-9]+)\.(.*?)$/)
+    {
+      my $value = delete $args{$key};
+      $args{retriever_spec}->[$1]->{$2} = $value;
+    }
+  }
+  
+  $class->$orig(%args);
+};
 
 # TODO: bin_requires
 # TODO: env

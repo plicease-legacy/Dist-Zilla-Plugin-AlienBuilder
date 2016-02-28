@@ -38,6 +38,8 @@ These attributes are passed directly into the [Alien::Builder::MM](https://metac
 - name
 - provides\_cflags
 - provides\_libs
+- retriever
+- retriever\_start
 - test\_commands
 - version\_check
 
@@ -50,6 +52,16 @@ default.  If you want to override some of the behavior then
 you can create a subclass and specify it here.  Put the class
 in your `inc` directory, which will automatically get
 included.
+
+## retriever\_spec
+
+The retriever specification is an array of hashes.  See
+the [Alien::Builder](https://metacpan.org/pod/Alien::Builder) documentation for details.  You can
+specify elements in this array using the dot `.` character:
+
+    [AlienBuilder]
+    retriever_spec.0.pattern = ^foo-(([0-9]+\.)*[0-9]+)$
+    retriever_spec.1.pattern = ^foo-(([0-9]+\.)*[0-9]+)\.tar\.gz$
 
 # SEE ALSO
 

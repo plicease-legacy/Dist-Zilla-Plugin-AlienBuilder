@@ -23,7 +23,7 @@ subtest basic => sub {
   my $plugin = first { $_->isa('Dist::Zilla::Plugin::AlienBuilder') } @{ $tzil->plugins };
   
   ok $plugin, 'plugin exists';
-  is_deeply $plugin->builder_args, { dist_name => 'Alien-Foo' }, 'builder_args' if $plugin;
+  is_deeply $plugin->builder_args, { dist_name => 'Alien-Foo', retriever_spec => [] }, 'builder_args' if $plugin;
 
   compile_ok($tzil, 'Makefile.PL');
 };
@@ -51,8 +51,11 @@ subtest 'with arguments' => sub {
         build_commands    => [ 'foo', 'bar' ],
         test_commands     => [ 'baz', 'blorph' ],
         install_commands  => [ 'foo', 'baz' ],
-        retreiver         => 'My::Retreiver',
-        retreiver_start   => 'http://foo.com',
+        retriever         => 'My::Retriever',
+        retriever_start   => 'http://foo.com',
+        'retriever_spec.0.pattern' => '^foo',
+        'retriever_spec.0.sort'    => 'fun',
+        'retriever_spec.1.pattern' => '^bar',
       } ],
     ),
   }});
@@ -80,8 +83,9 @@ subtest 'with arguments' => sub {
         build_commands    => [ 'foo', 'bar' ],
         test_commands     => [ 'baz', 'blorph' ],
         install_commands  => [ 'foo', 'baz' ],
-        retreiver         => 'My::Retreiver',
-        retreiver_start   => 'http://foo.com',
+        retriever         => 'My::Retriever',
+        retriever_start   => 'http://foo.com',
+        retriever_spec    => [ { pattern => '^foo', sort => 'fun' }, { pattern => '^bar' } ],
   }, 'builder_args' if $plugin;
 
   compile_ok($tzil, 'Makefile.PL');
@@ -109,7 +113,7 @@ subtest 'custom class' => sub {
   my $plugin = first { $_->isa('Dist::Zilla::Plugin::AlienBuilder') } @{ $tzil->plugins };
   
   ok $plugin, 'plugin exists';
-  is_deeply $plugin->builder_args, { dist_name => 'Alien-Foo' }, 'builder_args' if $plugin;
+  is_deeply $plugin->builder_args, { dist_name => 'Alien-Foo', retriever_spec => [] }, 'builder_args' if $plugin;
 
   compile_ok($tzil, 'Makefile.PL');
 };
