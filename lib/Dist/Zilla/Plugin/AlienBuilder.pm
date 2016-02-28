@@ -12,7 +12,7 @@ use warnings;
  [MakeMaker]
  [AlienBuilder]
  name = foo
- ; TODO: retriever
+ retriever_spec.0.pattern = ^foo-1.([0-9]+)\.tar\gz$
  build_commands = %c --prefix=%s
  build_commands = make
  install_commands = make install
