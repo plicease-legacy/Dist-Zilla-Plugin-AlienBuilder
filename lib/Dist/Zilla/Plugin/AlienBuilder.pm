@@ -58,6 +58,10 @@ These attributes are passed directly into the L<Alien::Builder::MM> constructor:
 
 =item provides_libs
 
+=item retreiver
+
+=item retreiver_start
+
 =item test_commands
 
 =item version_check
@@ -89,7 +93,8 @@ has $_ => ( is => 'ro', isa => 'Bool' )
   for qw( arch autoconf_with_pic dest_dir isolate_dynamic msys );
 
 has $_ => ( is => 'ro', isa => 'Str' )
-  for qw( name build_dir extractor ffi_name interpolator provides_cflags provides_libs version_check );
+  for qw( name build_dir extractor ffi_name interpolator provides_cflags provides_libs 
+          retreiver retreiver_start version_check );
 
 has $_ => ( is => 'ro', isa => 'ArrayRef[Str]' )
   for qw( build_commands install_commands test_commands );
@@ -98,7 +103,7 @@ has $_ => ( is => 'ro', isa => 'ArrayRef[Str]' )
 # TODO: env
 # TODO: helper
 # TODO: inline_auto_include
-# TODO: retriever ??
+# TODO: retriever_spec
 
 around mvp_multivalue_args => sub {
   my($orig, $self) = @_;

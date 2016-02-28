@@ -51,6 +51,8 @@ subtest 'with arguments' => sub {
         build_commands    => [ 'foo', 'bar' ],
         test_commands     => [ 'baz', 'blorph' ],
         install_commands  => [ 'foo', 'baz' ],
+        retreiver         => 'My::Retreiver',
+        retreiver_start   => 'http://foo.com',
       } ],
     ),
   }});
@@ -78,6 +80,8 @@ subtest 'with arguments' => sub {
         build_commands    => [ 'foo', 'bar' ],
         test_commands     => [ 'baz', 'blorph' ],
         install_commands  => [ 'foo', 'baz' ],
+        retreiver         => 'My::Retreiver',
+        retreiver_start   => 'http://foo.com',
   }, 'builder_args' if $plugin;
 
   compile_ok($tzil, 'Makefile.PL');
